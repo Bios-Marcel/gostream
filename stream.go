@@ -4,9 +4,6 @@ package gostream
 //its behavour may vary. The default implementations are an eager stream
 //and a lazy stream.
 type IntStream interface {
-	getData() *[]int
-	setData(data *[]int)
-
 	//Filter only keeps the values that meet the filter condition.
 	Filter(func(value int) bool) IntStream
 	//Map changes the values according to the mapping function.

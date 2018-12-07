@@ -6,11 +6,11 @@ import (
 	"github.com/Bios-Marcel/gostream"
 )
 
-func TestStreamCollect(t *testing.T) {
+func TestStreamLazyCollect(t *testing.T) {
 	testData := []int{1, 2, 3}
 	resultData := gostream.
-		StreamIntsEager(testData).
-		Filter(func(value int) bool { return value%2 == 1 }).
+		StreamIntsLazy(testData).
+		Filter(func(value int) bool { return value != 2 }).
 		Map(func(value int) int { return value * 4 }).
 		Collect()
 
@@ -25,10 +25,10 @@ func TestStreamCollect(t *testing.T) {
 	}
 }
 
-func TestStreamFindFirst(t *testing.T) {
+func TestStreamLazyFindFirst(t *testing.T) {
 	testData := []int{1, 2, 3}
 	firstValueValid := gostream.
-		StreamIntsEager(testData).
+		StreamIntsLazy(testData).
 		Filter(func(value int) bool { return value%2 == 1 }).
 		Map(func(value int) int { return value * 4 }).
 		FindFirst()
@@ -38,7 +38,7 @@ func TestStreamFindFirst(t *testing.T) {
 	}
 
 	firstValueInvalid := gostream.
-		StreamIntsEager(testData).
+		StreamIntsLazy(testData).
 		Filter(func(value int) bool { return value == -1 }).
 		FindFirst()
 
@@ -47,19 +47,18 @@ func TestStreamFindFirst(t *testing.T) {
 	}
 }
 
-func TestStreamEagerness(t *testing.T) {
+func TestStreamLaziness(t *testing.T) {
 	testData := []int{1, 2, 3}
 	mapIterationCounter := 0
 	gostream.
-		StreamIntsEager(testData).
-		Filter(func(value int) bool { return value%2 == 1 }).
+		StreamIntsLazy(testData).
 		Map(func(value int) int {
 			mapIterationCounter++
-			return value * 4
+			return value * 2
 		}).
 		FindFirst()
 
-	if mapIterationCounter != 2 {
-		t.Errorf("Error, map should have been called 2 times, but was called %d times.", mapIterationCounter)
+	if mapIterationCounter != 1 {
+		t.Errorf("Due to laziness, there should have only been one iteration, but there have been %d", mapIterationCounter)
 	}
 }

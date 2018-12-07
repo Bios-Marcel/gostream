@@ -1,54 +1,47 @@
 package gostream
 
 type eagerIntStream struct {
-	data *[]int
+	data []int
 }
 
-func (intStream *eagerIntStream) getData() *[]int {
-	return intStream.data
-}
-
-func (intStream *eagerIntStream) setData(newData *[]int) {
-	intStream.data = newData
-}
-
-//StreamIntsEager creates an eager IntStream.
+//StreamIntsEager creates an eager IntStream that uses a copy of the passed
+//array.
 func StreamIntsEager(data []int) IntStream {
+	defensiveCopy := make([]int, len(data))
+	copy(defensiveCopy, data)
 	return &eagerIntStream{
-		data: &data,
+		data: defensiveCopy,
 	}
 }
 
 func (intStream *eagerIntStream) Filter(filterFunction func(value int) bool) IntStream {
 	newData := make([]int, 0)
-	for _, element := range *intStream.getData() {
+	for _, element := range intStream.data {
 		if filterFunction(element) {
 			newData = append(newData, element)
 		}
 	}
-	intStream.setData(&newData)
+	intStream.data = newData
 
 	return intStream
 }
 
 func (intStream *eagerIntStream) Map(mapFunction func(value int) int) IntStream {
-	data := *intStream.getData()
-	for index, element := range data {
-		data[index] = mapFunction(element)
+	for index, element := range intStream.data {
+		intStream.data[index] = mapFunction(element)
 	}
 
 	return intStream
 }
 
 func (intStream *eagerIntStream) FindFirst() *int {
-	data := *intStream.getData()
-	if len(data) > 0 {
-		return &data[0]
+	if len(intStream.data) > 0 {
+		return &intStream.data[0]
 	}
 
 	return nil
 }
 
 func (intStream *eagerIntStream) Collect() []int {
-	return *intStream.getData()
+	return intStream.data
 }
