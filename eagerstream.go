@@ -12,6 +12,7 @@ func (intStream *eagerIntStream) setData(newData *[]int) {
 	intStream.data = newData
 }
 
+//StreamIntsEager creates an eager IntStream.
 func StreamIntsEager(data []int) IntStream {
 	return &eagerIntStream{
 		data: &data,
