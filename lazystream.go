@@ -50,7 +50,7 @@ FINDFIRST_VALUE_LOOP:
 
 		}
 
-		//As this is a terminating function, quit if we succesfully end a single iteration.
+		//As this is a terminating function, quit if we successfully end a single iteration.
 		return &value
 	}
 

@@ -1,7 +1,7 @@
 package gostream
 
 //IntStream is a stream over an int array. Depending on its implemenation
-//its behavour may vary. The default implementations are an eager stream
+//its behaviour may vary. The default implementations are an eager stream
 //and a lazy stream.
 type IntStream interface {
 	//Filter only keeps the values that meet the filter condition.
