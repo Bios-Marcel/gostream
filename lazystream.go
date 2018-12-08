@@ -57,6 +57,12 @@ FINDFIRST_VALUE_LOOP:
 	return nil
 }
 
+func (intStream *lazyIntStream) Reduce(reduceFunction func(one, two int) int) *int {
+	//This implementation is just being lazy, instead of a proper optimized solution,
+	//I'll simply call collect and reduce the result.
+	return reduceIntArray(reduceFunction, intStream.Collect())
+}
+
 func (intStream *lazyIntStream) Collect() []int {
 	collectedData := make([]int, 0)
 COLLECT_VALUE_LOOP:

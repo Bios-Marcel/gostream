@@ -47,6 +47,28 @@ func TestStreamLazyFindFirst(t *testing.T) {
 	}
 }
 
+func TestStreamLazyReduce(t *testing.T) {
+	testData := []int{1, 2, 3}
+	reducedValue := gostream.
+		StreamIntsLazy(testData).
+		Filter(func(value int) bool { return value != 1 }).
+		Map(func(value int) int { return value * 4 }).
+		Reduce(func(one, two int) int { return one + two })
+
+	if *reducedValue != 20 {
+		t.Errorf("Error, first value was %d, but should have been 20.", reducedValue)
+	}
+
+	reducedValue = gostream.
+		StreamIntsLazy(testData).
+		Filter(func(value int) bool { return value == -1 }).
+		Reduce(func(one, two int) int { return one + two })
+
+	if reducedValue != nil {
+		t.Errorf("Error, first value was %d, but should have been nil.", reducedValue)
+	}
+}
+
 func TestStreamLaziness(t *testing.T) {
 	testData := []int{1, 2, 3}
 	mapIterationCounter := 0

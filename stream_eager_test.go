@@ -47,6 +47,28 @@ func TestStreamEagerFindFirst(t *testing.T) {
 	}
 }
 
+func TestStreamEagerReduce(t *testing.T) {
+	testData := []int{1, 2, 3}
+	reducedValue := gostream.
+		StreamIntsEager(testData).
+		Filter(func(value int) bool { return value != 1 }).
+		Map(func(value int) int { return value * 4 }).
+		Reduce(func(one, two int) int { return one + two })
+
+	if *reducedValue != 20 {
+		t.Errorf("Error, first value was %d, but should have been 20.", reducedValue)
+	}
+
+	reducedValue = gostream.
+		StreamIntsEager(testData).
+		Filter(func(value int) bool { return value == -1 }).
+		Reduce(func(one, two int) int { return one + two })
+
+	if reducedValue != nil {
+		t.Errorf("Error, first value was %d, but should have been nil.", reducedValue)
+	}
+}
+
 func TestStreamEagerness(t *testing.T) {
 	testData := []int{1, 2, 3}
 	mapIterationCounter := 0

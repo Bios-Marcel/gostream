@@ -45,3 +45,7 @@ func (intStream *eagerIntStream) FindFirst() *int {
 func (intStream *eagerIntStream) Collect() []int {
 	return intStream.data
 }
+
+func (intStream *eagerIntStream) Reduce(reduceFunction func(valueOne, valueTwo int) int) *int {
+	return reduceIntArray(reduceFunction, intStream.data)
+}
