@@ -9,6 +9,32 @@ There is an eager and a lazy implementation. Currently those implementations
 are specifically for the `int` type and do not have any functions besides
 `Filter`, `Map`, `Collect`, `Reduce` and `FindFirst`.
 
+## Dude, what are those stream things you are talking about
+
+I am glad you asked! Streams is basically a small concept that allows
+you to process data in a declerative way. The produced code is mostly easy
+to understand and can theoretically automatically be scheduled onto multiple
+threads, or in the case of Go, coroutines.
+
+Overall streams consist of two types of methods, those are terminating methods
+and non-terminating methods. A terminating method ends the call-chain, as it
+returns some kind of end result. A non-terminating methods simply returns the
+stream itself. A stream cannot be used multiple times, every time you want to
+use a stream, you have to create a new one.
+
+## Why only for integers
+
+Well, as you may have noticed, Go doesn't have generics and therefore it isn't
+possible to write something like this in a generic way, unless you are willing
+to fill your code with a lot of `interface{}` and casts.
+
+In the future, a look at [genny](https://github.com/cheekybits/genny) might be
+worth considering.
+
+Or I might just implement streams for all the primitive datatypes and for
+`interface`. Anyhow, this project is first of all just something I do for
+fun, so don't expect it to have proper support and such.
+
 ## Examples
 
 Get all even numbers, multiply them by two and sum up the leftover values.
@@ -25,3 +51,21 @@ summedEvens := gostream.
 
 fmt.Println(summedEvens)
 ```
+
+However, the usage of laziness is way more interesting, for example
+look at this code:
+
+```go
+testData := []int{1, 2, 3, 4, 5}
+firstValueValid := gostream.
+    StreamIntsLazy(testData).
+    Filter(func(value int) bool { return value != 2 }).
+    Map(func(value int) int { return value * 4 }).
+    FindFirst()
+```
+
+The functions passed to `Filter(...)` and `Map(...)` will be executed exactly
+once, since `FindFirst()` will stop executing after it finds any value.
+
+In an eager stream, the function passed to `Filter(...)` would execute five
+times and the function passed to `Map(...)` would execute four times.
