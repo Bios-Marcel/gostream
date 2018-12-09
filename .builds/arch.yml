@@ -1,6 +1,5 @@
 image: archlinux
 packages:
-  - gtk3
   - go
 tasks:
   - build: |
