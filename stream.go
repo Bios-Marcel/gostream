@@ -16,6 +16,11 @@ type IntStream interface {
 	Collect() []int
 }
 
+//StreamInts creates an IntStream using the lazy implementation of IntStream.
+func StreamInts(data []int) IntStream {
+	return StreamIntsLazy(data)
+}
+
 func reduceIntArray(reduceFunction func(valueOne, valueTwo int) int, data []int) *int {
 	lengthOfData := len(data)
 

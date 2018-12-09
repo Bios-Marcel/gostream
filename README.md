@@ -45,7 +45,7 @@ For this example I am just going to use an eager stream.
 data := []int{1,2,3,4,5,6,7,8,9,10}
 summedEvens := gostream.
     StreamIntsEager(data).
-    Filter(func(value int) bool {return value % 2 == 0}).
+    Filter(func(value int) bool {return value%2 == 0}).
     Map(func(value int) int {return value * 2})
     Reduce(func(one, two int) int {return one + two})
 
@@ -70,17 +70,23 @@ once, since `FindFirst()` will stop executing after it finds any value.
 In an eager stream, the function passed to `Filter(...)` would execute five
 times and the function passed to `Map(...)` would execute four times.
 
+In case you don't care wether the implementation should be eager or lazy,
+simply use the method `gostream.StreamInts([]int) IntStream`.
+
 ## Making use of parallelism
 
 In order to get the maximum out of Go and streams, having streams make use of
-parallelism would be very useful. A stream should only be parallel if the user
-ask the framework to do so, otherwise a lot of logic is required in order to
-find out if parallelism would make sense. Introducing such logic would create
-an overhead and make the code more prone to errors. Therefore, a parallel
-stream will always create multiple channels per step, no matter if the terminal
-action is a `Collect()` or a `FindFirst()`. A downside would be that in case of
-a `FindFirst()` the stream might execute more code than necessary, since the
-go routines aren't killable from outisde, unless the user prepares them to be
-killable, but that would introduce too much boilerplate code when using the
-parallel api. However, since the code executed shouldn't have side effects,
-that might be fine.
+parallelism would be very useful.
+
+A stream should only be parallel if the user ask the framework to do so,
+otherwise a lot of logic is required in order to find out if parallelism would
+make sense or not. Introducing such logic would create an overhead and make
+the code more prone to errors. Therefore, a parallel stream will always create
+multiple channels per step, no matter if the terminal action is a `Collect()`
+or a `FindFirst()`.
+
+A downside would be that in case of a `FindFirst()` the stream might execute
+more code than necessary, since the go routines aren't killable from outisde,
+unless the user prepares them to be killable, but that would introduce too
+much boilerplate code when using the parallel api. However, since the code
+executed shouldn't have side effects, that might be fine.
