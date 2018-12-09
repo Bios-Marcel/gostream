@@ -1,0 +1,10 @@
+image: archlinux
+packages:
+  - gtk3
+  - go
+tasks:
+  - build: |
+      export GOPATH=$PWD
+      go get github.com/Bios-Marcel/gostream
+      cd src/github.com/Bios-Marcel/gostream
+      go test
