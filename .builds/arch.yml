@@ -4,6 +4,7 @@ packages:
 tasks:
   - build: |
       export GOPATH=$PWD
+      export PATH=$PATH:$GOPATH/bin
       go get github.com/Bios-Marcel/gostream
       cd src/github.com/Bios-Marcel/gostream
       go generate
