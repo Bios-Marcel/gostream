@@ -4,11 +4,9 @@
 [![builds.sr.ht status](https://builds.sr.ht/~biosmarcel/gostream/arch.yml.svg)](https://builds.sr.ht/~biosmarcel/gostream/arch.yml?)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Bios-Marcel/gostream)](https://goreportcard.com/report/github.com/Bios-Marcel/gostream)
 
-This repository is a simple example of how streams could be implemented using golang.
-
-There is an eager and a lazy implementation. Currently those implementations
-are specifically for the `int` type and do not have any functions besides
-`Filter`, `Map`, `Collect`, `Reduce` and `FindFirst`.
+This repository contains a generic implementation for streams, similar to the
+stream API that Java has. For a list of available functions, check the
+[documentation](https://godoc.org/github.com/Bios-Marcel/gostream#GenericStreamEntityStream).
 
 ## Dude, what are those stream things you are talking about
 
@@ -23,18 +21,26 @@ returns some kind of end result. A non-terminating methods simply returns the
 stream itself. A stream cannot be used multiple times, every time you want to
 use a stream, you have to create a new one.
 
-## Why only for integers
+## Usage
 
-Well, as you may have noticed, Go doesn't have generics and therefore it isn't
-possible to write something like this in a generic way, unless you are willing
-to fill your code with a lot of `interface{}` and casts.
+This library is implemented using [genny](https://github.com/cheekybits/genny),
+that means that each needed implementation has to be generated before starting
+to compile your actual code.
 
-In the future, a look at [genny](https://github.com/cheekybits/genny) might be
-worth considering.
-
-I might just implement streams for all the primitive datatypes and for
-`interface`. Anyhow, this project is first of all just something I do for
-fun, so don't expect it to have proper support and such.
+1. You'll have to install `genny` in order to generate the necessary source
+    ```shell
+    go install github.com/cheekybits/genny
+    ```
+2. Pull the repository
+    ```shell
+    go get github.com/Bios-Marcel/gostream
+    ```
+3. Generate the versions you need
+    ```shell
+    genny -in="$GOPATH/src/github.com/Bios-Marcel/gostream/stream.go" /
+        -out="folder/outputfile.go" -pkg="newpackagename" /
+        "GenericStreamEntity=desiredtypes"
+4. Compile your code
 
 ## Examples
 
@@ -45,7 +51,7 @@ For this example I am just going to use an eager stream.
 ```go
 data := []int{1,2,3,4,5,6,7,8,9,10}
 summedEvens := gostream.
-    StreamIntsEager(data).
+    StreamIntEager(data).
     Filter(func(value int) bool {return value%2 == 0}).
     Map(func(value int) int {return value * 2})
     Reduce(func(one, two int) int {return one + two})
@@ -59,7 +65,7 @@ look at this code:
 ```go
 testData := []int{1, 2, 3, 4, 5}
 firstValueValid := gostream.
-    StreamIntsLazy(testData).
+    StreamIntLazy(testData).
     Filter(func(value int) bool { return value != 2 }).
     Map(func(value int) int { return value * 4 }).
     FindFirst()
@@ -72,7 +78,7 @@ In an eager stream, the function passed to `Filter(...)` would execute five
 times and the function passed to `Map(...)` would execute four times.
 
 In case you don't care wether the implementation should be eager or lazy,
-simply use the method `gostream.StreamInts([]int) IntStream`.
+simply use the method `gostream.StreamGenericStreamEntity([]int) IntStream`.
 
 ## Making use of parallelism
 
