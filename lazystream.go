@@ -5,7 +5,10 @@ type lazyGenericStreamEntityStream struct {
 	functions []interface{}
 }
 
+//GenericStreamEntityFilter is the type of function that filters values.
 type GenericStreamEntityFilter func(value GenericStreamEntity) bool
+
+//GenericStreamEntityMapper is the type of function that maps values.
 type GenericStreamEntityMapper func(value GenericStreamEntity) GenericStreamEntity
 
 //StreamGenericStreamEntityLazy creates a lazy StreamGenericStreamEntity that

@@ -9,7 +9,10 @@ type lazyIntStream struct {
 	functions []interface{}
 }
 
+//IntFilter is the type of function that filters values.
 type IntFilter func(value int) bool
+
+//IntMapper is the type of function that maps values.
 type IntMapper func(value int) int
 
 //StreamIntLazy creates a lazy StreamInt that

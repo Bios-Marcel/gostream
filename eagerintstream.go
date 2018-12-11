@@ -8,7 +8,7 @@ type eagerIntStream struct {
 	data []int
 }
 
-//StreamIntsEager creates an eager IntStream that uses a copy of the passed
+//StreamIntEager creates an eager IntStream that uses a copy of the passed
 //array.
 func StreamIntEager(data []int) IntStream {
 	defensiveCopy := make([]int, len(data))

@@ -4,8 +4,8 @@ type eagerGenericStreamEntityStream struct {
 	data []GenericStreamEntity
 }
 
-//StreamIntsEager creates an eager GenericStreamEntityStream that uses a copy of the passed
-//array.
+//StreamGenericStreamEntityEager creates an eager GenericStreamEntityStream
+//that uses a copy of the passed array.
 func StreamGenericStreamEntityEager(data []GenericStreamEntity) GenericStreamEntityStream {
 	defensiveCopy := make([]GenericStreamEntity, len(data))
 	copy(defensiveCopy, data)

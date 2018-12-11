@@ -1,2 +1,4 @@
 github.com/cheekybits/genny v1.0.0 h1:uGGa4nei+j20rOSeDeP5Of12XVm7TGUd4dJA9RDitfE=
 github.com/cheekybits/genny v1.0.0/go.mod h1:+tQajlRqAUrPI7DOSpB0XAqZYtQakVtB7wXkRAgjxjQ=
+golang.org/x/tools v0.0.0-20181211200412-2b6afc6596c9 h1:J9YYbAoPaoJzppee/I37cyy2rN0FogFEkXizwBsugpY=
+golang.org/x/tools v0.0.0-20181211200412-2b6afc6596c9/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
