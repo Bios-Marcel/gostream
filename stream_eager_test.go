@@ -1,5 +1,3 @@
-//go:generate genny -in=eagerstream.go -out=eagerintstream.go gen "GenericStreamEntity=int"
-//go:generate genny -in=stream.go -out=intstream.go gen "GenericStreamEntity=int"
 package gostream_test
 
 import (
