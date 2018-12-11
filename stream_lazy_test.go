@@ -9,7 +9,7 @@ import (
 func TestStreamLazyCollect(t *testing.T) {
 	testData := []int{1, 2, 3}
 	resultData := gostream.
-		StreamIntsLazy(testData).
+		StreamIntLazy(testData).
 		Filter(func(value int) bool { return value != 2 }).
 		Map(func(value int) int { return value * 4 }).
 		Collect()
@@ -28,7 +28,7 @@ func TestStreamLazyCollect(t *testing.T) {
 func TestStreamLazyFindFirst(t *testing.T) {
 	testData := []int{1, 2, 3}
 	firstValueValid := gostream.
-		StreamIntsLazy(testData).
+		StreamIntLazy(testData).
 		Filter(func(value int) bool { return value%2 == 1 }).
 		Map(func(value int) int { return value * 4 }).
 		FindFirst()
@@ -38,7 +38,7 @@ func TestStreamLazyFindFirst(t *testing.T) {
 	}
 
 	firstValueInvalid := gostream.
-		StreamIntsLazy(testData).
+		StreamIntLazy(testData).
 		Filter(func(value int) bool { return value == -1 }).
 		FindFirst()
 
@@ -50,7 +50,7 @@ func TestStreamLazyFindFirst(t *testing.T) {
 func TestStreamLazyReduce(t *testing.T) {
 	testData := []int{1, 2, 3}
 	reducedValue := gostream.
-		StreamIntsLazy(testData).
+		StreamIntLazy(testData).
 		Filter(func(value int) bool { return value != 1 }).
 		Map(func(value int) int { return value * 4 }).
 		Reduce(func(one, two int) int { return one + two })
@@ -60,7 +60,7 @@ func TestStreamLazyReduce(t *testing.T) {
 	}
 
 	reducedValue = gostream.
-		StreamIntsLazy(testData).
+		StreamIntLazy(testData).
 		Filter(func(value int) bool { return value == -1 }).
 		Reduce(func(one, two int) int { return one + two })
 
@@ -73,7 +73,7 @@ func TestStreamLaziness(t *testing.T) {
 	testData := []int{1, 2, 3}
 	mapIterationCounter := 0
 	gostream.
-		StreamIntsLazy(testData).
+		StreamIntLazy(testData).
 		Map(func(value int) int {
 			mapIterationCounter++
 			return value * 2

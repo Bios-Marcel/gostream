@@ -1,51 +1,51 @@
 package gostream
 
-type eagerIntStream struct {
-	data []int
+type eagerGenericStreamEntityStream struct {
+	data []GenericStreamEntity
 }
 
-//StreamIntsEager creates an eager IntStream that uses a copy of the passed
+//StreamIntsEager creates an eager GenericStreamEntityStream that uses a copy of the passed
 //array.
-func StreamIntsEager(data []int) IntStream {
-	defensiveCopy := make([]int, len(data))
+func StreamGenericStreamEntityEager(data []GenericStreamEntity) GenericStreamEntityStream {
+	defensiveCopy := make([]GenericStreamEntity, len(data))
 	copy(defensiveCopy, data)
-	return &eagerIntStream{
+	return &eagerGenericStreamEntityStream{
 		data: defensiveCopy,
 	}
 }
 
-func (intStream *eagerIntStream) Filter(filterFunction func(value int) bool) IntStream {
-	newData := make([]int, 0)
-	for _, element := range intStream.data {
+func (stream *eagerGenericStreamEntityStream) Filter(filterFunction func(value GenericStreamEntity) bool) GenericStreamEntityStream {
+	newData := make([]GenericStreamEntity, 0)
+	for _, element := range stream.data {
 		if filterFunction(element) {
 			newData = append(newData, element)
 		}
 	}
-	intStream.data = newData
+	stream.data = newData
 
-	return intStream
+	return stream
 }
 
-func (intStream *eagerIntStream) Map(mapFunction func(value int) int) IntStream {
-	for index, element := range intStream.data {
-		intStream.data[index] = mapFunction(element)
+func (stream *eagerGenericStreamEntityStream) Map(mapFunction func(value GenericStreamEntity) GenericStreamEntity) GenericStreamEntityStream {
+	for index, element := range stream.data {
+		stream.data[index] = mapFunction(element)
 	}
 
-	return intStream
+	return stream
 }
 
-func (intStream *eagerIntStream) FindFirst() *int {
-	if len(intStream.data) > 0 {
-		return &intStream.data[0]
+func (stream *eagerGenericStreamEntityStream) FindFirst() *GenericStreamEntity {
+	if len(stream.data) > 0 {
+		return &stream.data[0]
 	}
 
 	return nil
 }
 
-func (intStream *eagerIntStream) Collect() []int {
-	return intStream.data
+func (stream *eagerGenericStreamEntityStream) Collect() []GenericStreamEntity {
+	return stream.data
 }
 
-func (intStream *eagerIntStream) Reduce(reduceFunction func(valueOne, valueTwo int) int) *int {
-	return reduceIntArray(reduceFunction, intStream.data)
+func (stream *eagerGenericStreamEntityStream) Reduce(reduceFunction func(valueOne, valueTwo GenericStreamEntity) GenericStreamEntity) *GenericStreamEntity {
+	return reduceGenericStreamEntity(reduceFunction, stream.data)
 }

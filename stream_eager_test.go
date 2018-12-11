@@ -1,3 +1,5 @@
+//go:generate genny -in=eagerstream.go -out=eagerintstream.go gen "GenericStreamEntity=int"
+//go:generate genny -in=stream.go -out=intstream.go gen "GenericStreamEntity=int"
 package gostream_test
 
 import (
@@ -9,7 +11,7 @@ import (
 func TestStreamEagerCollect(t *testing.T) {
 	testData := []int{1, 2, 3}
 	resultData := gostream.
-		StreamIntsEager(testData).
+		StreamIntEager(testData).
 		Filter(func(value int) bool { return value != 2 }).
 		Map(func(value int) int { return value * 4 }).
 		Collect()
@@ -28,7 +30,7 @@ func TestStreamEagerCollect(t *testing.T) {
 func TestStreamEagerFindFirst(t *testing.T) {
 	testData := []int{1, 2, 3}
 	firstValueValid := gostream.
-		StreamIntsEager(testData).
+		StreamIntEager(testData).
 		Filter(func(value int) bool { return value%2 == 1 }).
 		Map(func(value int) int { return value * 4 }).
 		FindFirst()
@@ -38,7 +40,7 @@ func TestStreamEagerFindFirst(t *testing.T) {
 	}
 
 	firstValueInvalid := gostream.
-		StreamIntsEager(testData).
+		StreamIntEager(testData).
 		Filter(func(value int) bool { return value == -1 }).
 		FindFirst()
 
@@ -50,7 +52,7 @@ func TestStreamEagerFindFirst(t *testing.T) {
 func TestStreamEagerReduce(t *testing.T) {
 	testData := []int{1, 2, 3}
 	reducedValue := gostream.
-		StreamIntsEager(testData).
+		StreamIntEager(testData).
 		Filter(func(value int) bool { return value != 1 }).
 		Map(func(value int) int { return value * 4 }).
 		Reduce(func(one, two int) int { return one + two })
@@ -60,7 +62,7 @@ func TestStreamEagerReduce(t *testing.T) {
 	}
 
 	reducedValue = gostream.
-		StreamIntsEager(testData).
+		StreamIntEager(testData).
 		Filter(func(value int) bool { return value == -1 }).
 		Reduce(func(one, two int) int { return one + two })
 
@@ -73,7 +75,7 @@ func TestStreamEagerness(t *testing.T) {
 	testData := []int{1, 2, 3}
 	mapIterationCounter := 0
 	gostream.
-		StreamIntsEager(testData).
+		StreamIntEager(testData).
 		Filter(func(value int) bool { return value%2 == 1 }).
 		Map(func(value int) int {
 			mapIterationCounter++

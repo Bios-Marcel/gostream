@@ -1,37 +1,38 @@
 package gostream
 
-type lazyIntStream struct {
-	data      []int
+type lazyGenericStreamEntityStream struct {
+	data      []GenericStreamEntity
 	functions []interface{}
 }
 
-type intFilter func(value int) bool
-type intMapper func(value int) int
+type GenericStreamEntityFilter func(value GenericStreamEntity) bool
+type GenericStreamEntityMapper func(value GenericStreamEntity) GenericStreamEntity
 
-//StreamIntsLazy creates a lazy IntStream that uses a copy of the passed array.
-func StreamIntsLazy(data []int) IntStream {
-	defensiveCopy := make([]int, len(data))
+//StreamGenericStreamEntityLazy creates a lazy StreamGenericStreamEntity that
+//uses a copy of the passed array.
+func StreamGenericStreamEntityLazy(data []GenericStreamEntity) GenericStreamEntityStream {
+	defensiveCopy := make([]GenericStreamEntity, len(data))
 	copy(defensiveCopy, data)
-	return &lazyIntStream{
+	return &lazyGenericStreamEntityStream{
 		data: defensiveCopy,
 	}
 }
 
-func (intStream *lazyIntStream) Filter(filterFunction func(value int) bool) IntStream {
-	intStream.functions = append(intStream.functions, (intFilter)(filterFunction))
-	return intStream
+func (stream *lazyGenericStreamEntityStream) Filter(filterFunction func(value GenericStreamEntity) bool) GenericStreamEntityStream {
+	stream.functions = append(stream.functions, (GenericStreamEntityFilter)(filterFunction))
+	return stream
 }
 
-func (intStream *lazyIntStream) Map(mapFunction func(value int) int) IntStream {
-	intStream.functions = append(intStream.functions, (intMapper)(mapFunction))
-	return intStream
+func (stream *lazyGenericStreamEntityStream) Map(mapFunction func(value GenericStreamEntity) GenericStreamEntity) GenericStreamEntityStream {
+	stream.functions = append(stream.functions, (GenericStreamEntityMapper)(mapFunction))
+	return stream
 }
 
-func (intStream *lazyIntStream) FindFirst() *int {
+func (stream *lazyGenericStreamEntityStream) FindFirst() *GenericStreamEntity {
 FINDFIRST_VALUE_LOOP:
-	for _, value := range intStream.data {
-		for _, function := range intStream.functions {
-			castFilter, ok := function.(intFilter)
+	for _, value := range stream.data {
+		for _, function := range stream.functions {
+			castFilter, ok := function.(GenericStreamEntityFilter)
 			if ok {
 				if castFilter(value) {
 					//Continue, since value fits the filter
@@ -42,7 +43,7 @@ FINDFIRST_VALUE_LOOP:
 				}
 			}
 
-			castMapper, ok := function.(intMapper)
+			castMapper, ok := function.(GenericStreamEntityMapper)
 			if ok {
 				value = castMapper(value)
 				continue
@@ -57,18 +58,18 @@ FINDFIRST_VALUE_LOOP:
 	return nil
 }
 
-func (intStream *lazyIntStream) Reduce(reduceFunction func(one, two int) int) *int {
-	//This implementation is just being lazy, instead of a proper optimized solution,
-	//I'll simply call collect and reduce the result.
-	return reduceIntArray(reduceFunction, intStream.Collect())
+func (stream *lazyGenericStreamEntityStream) Reduce(reduceFunction func(one, two GenericStreamEntity) GenericStreamEntity) *GenericStreamEntity {
+	//This implementation is just me being lazy, instead of a proper
+	//optimized solution, I'll simply call collect and reduce the result.
+	return reduceGenericStreamEntity(reduceFunction, stream.Collect())
 }
 
-func (intStream *lazyIntStream) Collect() []int {
-	collectedData := make([]int, 0)
+func (stream *lazyGenericStreamEntityStream) Collect() []GenericStreamEntity {
+	collectedData := make([]GenericStreamEntity, 0)
 COLLECT_VALUE_LOOP:
-	for _, value := range intStream.data {
-		for _, function := range intStream.functions {
-			castFilter, ok := function.(intFilter)
+	for _, value := range stream.data {
+		for _, function := range stream.functions {
+			castFilter, ok := function.(GenericStreamEntityFilter)
 			if ok {
 				if castFilter(value) {
 					//Continue, since value fits the filter
@@ -79,7 +80,7 @@ COLLECT_VALUE_LOOP:
 				}
 			}
 
-			castMapper, ok := function.(intMapper)
+			castMapper, ok := function.(GenericStreamEntityMapper)
 			if ok {
 				value = castMapper(value)
 				continue
