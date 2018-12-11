@@ -1,5 +1,7 @@
 package gostream_test
 
+//go:generate genny -in=stream.go -out=intstream.go gen "GenericStreamEntity=int"
+
 import (
 	"testing"
 

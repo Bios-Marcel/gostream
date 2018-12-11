@@ -6,4 +6,5 @@ tasks:
       export GOPATH=$PWD
       go get github.com/Bios-Marcel/gostream
       cd src/github.com/Bios-Marcel/gostream
+      go generate
       go test
