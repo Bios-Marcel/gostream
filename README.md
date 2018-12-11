@@ -29,6 +29,7 @@ to compile your actual code.
 
 1. You'll have to install `genny` in order to generate the necessary source
     ```shell
+    go get -u github.com/cheekybits/genny
     go install github.com/cheekybits/genny
     ```
 2. Pull the repository
