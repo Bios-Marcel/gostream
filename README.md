@@ -21,6 +21,19 @@ returns some kind of end result. A non-terminating methods simply returns the
 stream itself. A stream cannot be used multiple times, every time you want to
 use a stream, you have to create a new one.
 
+## Limitations
+
+Since Go doesn't support generics, this API isn't as powerful as it could be
+if written in a different language like Java or Kotlin. In Java the types of
+the Stream could change after every call, this isn't possible in the case of
+of gostream, since a stream is generated for a very specific type. If you'd
+want a truly generic stream API, you'd have to use `interface{}` everywhere
+and cast it into the correct types, however, this would reduce compiletime
+safety.
+
+I might eventually create a `interface{}` version of this library, which is
+gonna be more powerful than the genny-powered version.
+
 ## Usage
 
 This library is implemented using [genny](https://github.com/cheekybits/genny),

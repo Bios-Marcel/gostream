@@ -1,3 +1,5 @@
+github.com/Bios-Marcel/gostreamexample v0.0.0-20181212080805-ba35d4001a51 h1:pI0bR1AZppABUR6TG0xcYlhm0u1A9zX6u1UDdxHgfZc=
+github.com/Bios-Marcel/gostreamexample v0.0.0-20181212080805-ba35d4001a51/go.mod h1:ezykx+N1eGOHYc1JFWAULSGyCxA65Ec7FX//bXTmgHw=
 github.com/cheekybits/genny v1.0.0 h1:uGGa4nei+j20rOSeDeP5Of12XVm7TGUd4dJA9RDitfE=
 github.com/cheekybits/genny v1.0.0/go.mod h1:+tQajlRqAUrPI7DOSpB0XAqZYtQakVtB7wXkRAgjxjQ=
 golang.org/x/tools v0.0.0-20181211200412-2b6afc6596c9 h1:J9YYbAoPaoJzppee/I37cyy2rN0FogFEkXizwBsugpY=
