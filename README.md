@@ -45,6 +45,9 @@ to compile your actual code.
 
 ## Examples
 
+For a standalone example, check out the repository
+[gostreamexample](https://github.com/Bios-Marcel/gostream).
+
 Get all even numbers, multiply them by two and sum up the leftover values.
 
 For this example I am just going to use an eager stream.
